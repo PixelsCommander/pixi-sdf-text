@@ -5,7 +5,7 @@ Signed distance fields text implementation for PixiJS
 -----------------------------------------------------
 
 <a href="https://www.mapbox.com/blog/text-signed-distance-fields/">SDF is the most efficient way to draw text in WebGL</a>.
-        It uses <a href="http://pixelscommander.com/polygon/pixi-sdf-text/assets/OpenSans-Regular.png">special kind of raster atlases</a> and GLSL shader to <a href="http://wdobbie.com/pdf/">draw vector scalable text in a very performant way</a> on GPU.</p>
+        It uses <a href="http://pixelscommander.com/polygon/pixi-sdf-text/demo/assets/OpenSans-Regular.png">special kind of raster atlases</a> and GLSL shader to <a href="http://wdobbie.com/pdf/">draw vector scalable text in a very performant way</a> on GPU.</p>
 
 [Demo](http://pixelscommander.com/polygon/pixi-sdf-text/demo/)
 
