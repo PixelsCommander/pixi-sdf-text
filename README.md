@@ -1,7 +1,7 @@
 pixi-sdf-text
 =============
 
-Signed distance fields text implementation for PixiJS
+Signed distance fields text implementation for [PixiJS](http://pixijs.com)
 -----------------------------------------------------
 
 <a href="https://www.mapbox.com/blog/text-signed-distance-fields/">SDF is the most efficient way to draw text in WebGL</a>.
