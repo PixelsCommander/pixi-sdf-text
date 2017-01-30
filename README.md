@@ -24,7 +24,7 @@ var style = {
 	metrics: window.fontMetrics,
 	texture: resources.font.texture
 };
-var text = new PIXI.sdf.Text('Abc', style);
+var sdfText = new PIXI.sdf.Text('Abc', style);
 stage.addChild(text);
 ```
 
