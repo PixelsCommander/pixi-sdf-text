@@ -18,7 +18,7 @@
     "rendering"
   ],
   "author": "Denis Radin aka PixelsCommander",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/PixelsCommander/pixi-sdf-text/issues"
   },
