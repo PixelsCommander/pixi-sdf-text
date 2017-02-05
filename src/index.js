@@ -74,6 +74,8 @@ export class SDFRenderer extends PIXI.ObjectRenderer {
         glData.shader.uniforms.translationMatrix = sdfText.worldTransform.toArray(true);
         glData.shader.uniforms.u_alpha = sdfText.worldAlpha;
         glData.shader.uniforms.u_color = sdfText.color;
+        glData.shader.uniforms.u_fontSize = sdfText.fontSize;
+        glData.shader.uniforms.u_buffer = sdfText.style.buffer;
         //glData.shader.uniforms.tint = sdfText.tintRgb;
 
         //const drawMode = sdfText.drawMode === Mesh.DRAW_MODES.TRIANGLE_MESH ? gl.TRIANGLE_STRIP : gl.TRIANGLES;

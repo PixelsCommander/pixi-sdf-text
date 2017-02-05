@@ -2,11 +2,13 @@ varying vec2 vTextureCoord;
 uniform vec3 u_color;
 uniform sampler2D uSampler;
 uniform float u_alpha;
+uniform float u_fontSize;
+uniform float u_buffer;
 
 void main(void)
 {
     float u_buffer = .7;
-    float u_gamma = 1. / 64.;
+    float u_gamma = 1. / u_fontSize * 2.;
     float u_debug = 0.0;
     //vec4 u_color = vec4(.2, .3, .4, 1.);
 
