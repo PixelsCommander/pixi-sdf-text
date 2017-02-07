@@ -7,8 +7,8 @@ uniform float u_weight;
 
 void main(void)
 {
-    float u_weight = .7;
-    float smoothing = 1. / u_fontSize * 8.;
+    float u_weight = .6;
+    float smoothing = 1. / u_fontSize * 6.;
     float debug = 0.0;
 
     vec2 textureCoord = vTextureCoord * 2.;
