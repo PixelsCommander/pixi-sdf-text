@@ -1,80 +1,75 @@
 let Mesh = PIXI.mesh.Mesh;
-let ObservablePoint = PIXI.ObservablePoint;
-let createIndicesForQuads = PIXI.createIndicesForQuads;
+let loadFont = require('load-bmfont');
+let createLayout = require('layout-bmfont-text');
+let createIndices = require('quad-indices');
+let vertices = require('./lib/vertices');
 
 import * as shaderCode from './sdf.frag';
 
 export default class Text extends PIXI.mesh.Mesh {
 
     constructor(text, style = {}) {
+        
         super(style.texture);
 
         this._text = text;
         this._style = style;
-        this._texture = style.texture;
-
         this.pluginName = 'sdf';
 
-        this.updateText();
-    }
+        loadFont(this._style.fontURL, (err, font) => {
 
-    drawGlyph(chr, vertices, uvs, pen, size) {
-        const metric = this._style.metrics.chars[chr];
-        if (!metric) return;
-
-        const scale = size / this._style.metrics.size;
-        const factor = 1;
-        let width = metric[0];
-        let height = metric[1];
-        const horiBearingX = metric[2];
-        const horiBearingY = metric[3];
-        const horiAdvance = metric[4];
-        const posX = metric[5];
-        const posY = metric[6];
-
-        if (width > 0 && height > 0) {
-            width += this._style.metrics.buffer * 2;
-            height += this._style.metrics.buffer * 2;
-
-            // Add a quad (= two triangles) per glyph.
-            vertices.push(
-                (factor * (pen.x + ((horiBearingX - this._style.metrics.buffer) * scale))), (factor * (pen.y - horiBearingY * scale)),
-                (factor * (pen.x + ((horiBearingX - this._style.metrics.buffer + width) * scale))), (factor * (pen.y - horiBearingY * scale)),
-                (factor * (pen.x + ((horiBearingX - this._style.metrics.buffer) * scale))), (factor * (pen.y + (height - horiBearingY) * scale)),
-
-                (factor * (pen.x + ((horiBearingX - this._style.metrics.buffer + width) * scale))), (factor * (pen.y - horiBearingY * scale)),
-                (factor * (pen.x + ((horiBearingX - this._style.metrics.buffer) * scale))), (factor * (pen.y + (height - horiBearingY) * scale)),
-                (factor * (pen.x + ((horiBearingX - this._style.metrics.buffer + width) * scale))), (factor * (pen.y + (height - horiBearingY) * scale))
-            );
-
-            let texWidth = this.texture.baseTexture.width;
-            let texHeight = this.texture.baseTexture.height;
-
-            uvs.push(
-                posX / texWidth, posY / texHeight,
-                (posX + width) / texWidth, posY / texHeight,
-                posX / texWidth, (posY + height) / texHeight,
-
-                (posX + width) / texWidth, posY / texHeight,
-                posX / texWidth, (posY + height) / texHeight,
-                (posX + width) / texWidth, (posY + height) / texHeight
-            );
-        }
-
-        pen.x = pen.x + horiAdvance * scale;
+            this._font = font;
+            PIXI.loader.add(this._style.imageURL, this._style.imageURL).load((loader, resources) => {
+                this._texture = resources[this._style.imageURL].texture;
+                this.updateText();
+            });
+        });
     }
 
     updateText() {
-        var pen = {x: 0, y: 0};
-        var vertices = [];
-        var indices = [];
-        var uvs = [];
 
-        for (var i = 0; i < this._text.length; i++) {
-            this.drawGlyph(this._text[i], vertices, uvs, pen, this.fontSize);
+        let opt = {
+            text: this._text,
+            font: this._font,
+            ...this._style
+        };
+
+        if (!opt.font) {
+            throw new TypeError('must specify a { font } in options');
         }
 
-        this.vertices = new Float32Array(vertices);
+        this.layout = createLayout(opt);
+
+        // get vec2 texcoords
+        let flipY = opt.flipY !== false;
+
+        // the desired BMFont data
+        let font = opt.font;
+
+        // determine texture size from font file
+        let texWidth = font.common.scaleW;
+        let texHeight = font.common.scaleH;
+
+        // get visible glyphs
+        let glyphs = this.layout.glyphs.filter(function (glyph) {
+            let bitmap = glyph.data;
+            return bitmap.width * bitmap.height > 0;
+        })
+
+        // provide visible glyphs for convenience
+        this.visibleGlyphs = glyphs;
+
+        // get common vertex data
+        let positions = vertices.positions(glyphs);
+        let uvs = vertices.uvs(glyphs, texWidth, texHeight, false);
+
+        this.indices = createIndices({
+            clockwise: true,
+            type: 'uint16',
+            count: glyphs.length
+        });
+
+        this.vertices = new Float32Array(positions);
         this.uvs = new Float32Array(uvs);
     }
 

@@ -31,33 +31,32 @@
 
     document.body.appendChild(app.view);
 
-    // load the texture we need
-    PIXI.loader.add('font', './assets/OpenSans-Regular.png').load(function (loader, resources) {
+    var style = {
+        fontSize: 24,
+        color: 0x39FF14,
+        align: 'left',
+        width: 400,
+        lineHeight: 64,
+        fontURL: 'assets/Lato-Regular-64.fnt',
+        imageURL: 'assets/lato.png'
+    };
 
-        var style = {
-            fontSize: 24,
-            color: 0x39FF14,
-            metrics: window.fontMetrics,
-            texture: resources.font.texture
-        };
+    window.text = new PIXI.sdf.Text('This is a multiline SDF text', style);
 
-        window.text = new PIXI.sdf.Text('Abc', style);
+    //You can cache text as a bitmap to make it cheaper to draw
+    //text.cacheAsBitmap = true;
 
-        //You can cache text as a bitmap to make it cheaper to draw
-        //text.cacheAsBitmap = true;
+    // Setup the position of the text
+    text.x = app.renderer.width / 2;
+    text.y = app.renderer.height / 2;
 
-        // Setup the position of the text
-        text.x = app.renderer.width / 2;
-        text.y = app.renderer.height / 2;
+    // Add the text to the scene we are building
+    app.stage.addChild(text);
 
-        // Add the text to the scene we are building
-        app.stage.addChild(text);
-
-        // Listen for frame updates
-        app.ticker.add(function () {
-            text.rotation += .01;
-            //text.color = Math.random() * 0xffffff;
-        });
+    // Listen for frame updates
+    app.ticker.add(function () {
+        text.rotation += .01;
+        //text.color = Math.random() * 0xffffff;
     });
 </script>
 </body>
