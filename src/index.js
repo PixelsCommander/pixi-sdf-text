@@ -21,8 +21,9 @@ export class SDFRenderer extends PIXI.ObjectRenderer {
         const renderer = this.renderer;
         const gl = renderer.gl;
         const texture = sdfText._texture;
+        const font = sdfText._font;
 
-        if (!texture.valid) {
+        if (!texture || !texture.valid || !font) {
             return;
         }
 
@@ -75,13 +76,12 @@ export class SDFRenderer extends PIXI.ObjectRenderer {
         glData.shader.uniforms.u_alpha = sdfText.worldAlpha;
         glData.shader.uniforms.u_color = sdfText.color;
         glData.shader.uniforms.u_fontSize = sdfText.fontSize;
-        glData.shader.uniforms.u_buffer = sdfText.style.buffer;
+        glData.shader.uniforms.u_fontInfoSize = sdfText.fontSize / font.info.size;
+        glData.shader.uniforms.u_weight = sdfText.style.weight;
         //glData.shader.uniforms.tint = sdfText.tintRgb;
 
-        //const drawMode = sdfText.drawMode === Mesh.DRAW_MODES.TRIANGLE_MESH ? gl.TRIANGLE_STRIP : gl.TRIANGLES;
-        //glData.vao.draw(drawMode, sdfText.indices.length, 0);
-
-        gl.drawArrays(gl.TRIANGLES, 0, sdfText.uvs.length / 2);
+        const drawMode = sdfText.drawMode = gl.TRIANGLES;
+        glData.vao.draw(drawMode, sdfText.indices.length, 0);
     }
 }
 

@@ -21,23 +21,24 @@ module.exports = {
             query: {
                 //plugins: ['transform-runtime'],
                 presets: ['es2015'],
+                plugins: ['transform-object-rest-spread']
             }
         },
-            { test: /\.(glsl|frag|vert)$/, loader: 'raw', exclude: /node_modules/ },
-            { test: /\.(glsl|frag|vert)$/, loader: 'glslify', exclude: /node_modules/ }
+            {test: /\.(glsl|frag|vert)$/, loader: 'raw', exclude: /node_modules/},
+            {test: /\.(glsl|frag|vert)$/, loader: 'glslify', exclude: /node_modules/}
         ]
     },
-    /* plugins: [
-     //new Visualizer(),
-     new uglifyJsPlugin({
-     minimize: true,
-     sourceMap: true,
-     output: {
-     comments: false
-     },
-     compressor: {
-     warnings: false
-     }
-     })
-     ] */
+    plugins: [
+        //new Visualizer(),
+        /* new uglifyJsPlugin({
+            minimize: true,
+            sourceMap: true,
+            output: {
+                comments: false
+            },
+            compressor: {
+                warnings: false
+            }
+        })*/
+    ]
 }
