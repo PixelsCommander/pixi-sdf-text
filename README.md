@@ -33,6 +33,10 @@ var sdfText = new PIXI.sdf.Text('Abc', style);
 stage.addChild(text);
 ```
 
+How to generate font descriptors and SDF atlases?
+-------------------------------------------------
+[Use this manual](https://github.com/Jam3/three-bmfont-text/blob/master/docs/sdf.md)
+
 Bugs
 ----
 Feel free to submit issues to [GitHub tracker](https://github.com/PixelsCommander/pixi-sdf-text/issues)
