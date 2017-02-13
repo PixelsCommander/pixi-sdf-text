@@ -22,7 +22,11 @@
     <h2>Signed distance fields text implementation for PixiJS</h2>
     <p>Essentially <a href="https://www.mapbox.com/blog/text-signed-distance-fields/">SDF is the most efficient way to draw text in WebGL</a>. <br>
         It uses <a href="./assets/OpenSans-Regular.png">special kind of raster atlases</a> and GLSL shader to <a href="http://wdobbie.com/pdf/">draw vector scalable text in a very performant way</a> on GPU.</p>
-    <p style="display: inline-block;">Ensure it scales well staying sharp even when rotating, </p><button style="pointer-events: all; display: inline-block;" id="size-button" onclick="window.text.fontSize = 140;">change text size</button>
+    <p style="display: inline-block;">Ensure it scales well staying sharp even when rotating, </p>
+    <button style="pointer-events: all; display: inline-block;" id="size-button" onclick="window.text.style.fill = 0xffffff;">change text color</button>
+    <button style="pointer-events: all; display: inline-block;" id="size-button" onclick="window.text.style.align = 'right';">change text align</button>
+    <button style="pointer-events: all; display: inline-block;" id="size-button" onclick="window.text.style.fontSize = '80';">change text size</button>
+    <button style="pointer-events: all; display: inline-block;" id="size-button" onclick="window.text.text = 'Lorem ipsum dolor sit amet';">change text copy</button>
 </div>
 <script>
     var app = new PIXI.Application(0, 0, {
@@ -33,9 +37,10 @@
 
     var style = {
         fontSize: 24,
-        color: 0x39FF14,
+        fontWeight: 'bold',
+        fill: 0x39FF14,
         align: 'left',
-        width: 400,
+        wordWrapWidth: 400,
         lineHeight: 64,
         fontURL: 'assets/Lato-Regular-64.fnt',
         imageURL: 'assets/lato.png'

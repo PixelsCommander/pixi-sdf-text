@@ -7,7 +7,6 @@ uniform float u_weight;
 
 void main(void)
 {
-    float u_weight = .6;
     float smoothing = 1. / u_fontSize * 6.;
     float debug = 0.0;
 
