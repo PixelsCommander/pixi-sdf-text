@@ -19,11 +19,16 @@ Usage
 
 ```javascript
 var style = {
-	fontSize: 24,
-	color: 0x39FF14,
-	metrics: window.fontMetrics,
-	texture: resources.font.texture
+    fontSize: 24,
+    fontWeight: 'bold',
+    fill: 0x39FF14,
+    align: 'left',
+    wordWrapWidth: 400,
+    lineHeight: 64,
+    fontURL: 'assets/Lato-Regular-64.fnt',
+    imageURL: 'assets/lato.png'
 };
+
 var sdfText = new PIXI.sdf.Text('Abc', style);
 stage.addChild(text);
 ```

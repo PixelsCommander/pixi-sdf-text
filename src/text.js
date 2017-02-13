@@ -3,24 +3,31 @@ let loadFont = require('load-bmfont');
 let createLayout = require('layout-bmfont-text');
 let createIndices = require('quad-indices');
 let vertices = require('./lib/vertices');
+import TextStyle from './text-style';
 
 import * as shaderCode from './sdf.frag';
 
 export default class Text extends PIXI.mesh.Mesh {
 
     constructor(text, style = {}) {
-        
+
         super(style.texture);
 
+        this.style = new TextStyle(style);
         this._text = text;
-        this._style = style;
+
         this.pluginName = 'sdf';
 
-        loadFont(this._style.fontURL, (err, font) => {
+        this.loadAssets();
+    }
+
+    loadAssets() {
+
+        loadFont(this.style.fontURL, (err, font) => {
 
             this._font = font;
-            PIXI.loader.add(this._style.imageURL, this._style.imageURL).load((loader, resources) => {
-                this._texture = resources[this._style.imageURL].texture;
+            PIXI.loader.add(this.style.imageURL, this.style.imageURL).load((loader, resources) => {
+                this._texture = resources[this.style.imageURL].texture;
                 this.updateText();
             });
         });
@@ -31,7 +38,7 @@ export default class Text extends PIXI.mesh.Mesh {
         let opt = {
             text: this._text,
             font: this._font,
-            ...this._style
+            ...this.style.getFlatCopy()
         };
 
         if (!opt.font) {
@@ -71,34 +78,16 @@ export default class Text extends PIXI.mesh.Mesh {
 
         this.vertices = new Float32Array(positions);
         this.uvs = new Float32Array(uvs);
+
+        this.styleID = this.style.styleID;
     }
 
-    get fontSize() {
-        return this._style.fontSize || 12;
+    get text() {
+        return this._text;
     }
 
-    set fontSize(value) {
-        this._style.fontSize = value;
-        this.updateText();
-    }
-
-    get color() {
-        let hexColor = this._style.color || 0x000000;
-        let color = PIXI.utils.hex2rgb(hexColor);
-        return color;
-    }
-
-    set color(value) {
-        this._style.color = value;
-        this.updateText();
-    }
-
-    get style() {
-        return this._style;
-    }
-
-    set style(value) {
-        this._style = value;
+    set text(value) {
+        this._text = value;
         this.updateText();
     }
 }

@@ -27,6 +27,10 @@ export class SDFRenderer extends PIXI.ObjectRenderer {
             return;
         }
 
+        if (sdfText.styleID !== sdfText.style.styleID) {
+            sdfText.updateText();
+        }
+
         let glData = sdfText._glDatas[renderer.CONTEXT_UID];
 
         if (!glData) {
@@ -74,9 +78,9 @@ export class SDFRenderer extends PIXI.ObjectRenderer {
 
         glData.shader.uniforms.translationMatrix = sdfText.worldTransform.toArray(true);
         glData.shader.uniforms.u_alpha = sdfText.worldAlpha;
-        glData.shader.uniforms.u_color = sdfText.color;
-        glData.shader.uniforms.u_fontSize = sdfText.fontSize;
-        glData.shader.uniforms.u_fontInfoSize = sdfText.fontSize / font.info.size;
+        glData.shader.uniforms.u_color = sdfText.style.fill;
+        glData.shader.uniforms.u_fontSize = sdfText.style.fontSize;
+        glData.shader.uniforms.u_fontInfoSize = sdfText.style.fontSize / font.info.size;
         glData.shader.uniforms.u_weight = sdfText.style.weight;
         //glData.shader.uniforms.tint = sdfText.tintRgb;
 
