@@ -30,7 +30,7 @@ var style = {
 };
 
 var sdfText = new PIXI.sdf.Text('Abc', style);
-stage.addChild(text);
+stage.addChild(sdfText);
 ```
 
 How to generate font descriptors and SDF atlases?
