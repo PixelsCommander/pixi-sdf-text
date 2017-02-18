@@ -7,7 +7,7 @@ var minimist = require('minimist');
 var args = minimist(process.argv.slice(2));
 
 gulp.task('deploy', function() {
-    var remotePath = '/var/www/sites_user/data/www/pixelscommander.com/polygon/pixi-sdf-text';
+    var remotePath = '/www/pixelscommander.com/polygon/pixi-sdf-text';
     var conn = ftp.create({
         host: 'pixelscommander.com',
         user: args.user,

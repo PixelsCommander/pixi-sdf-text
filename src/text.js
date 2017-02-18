@@ -80,6 +80,8 @@ export default class Text extends PIXI.mesh.Mesh {
         this.uvs = new Float32Array(uvs);
 
         this.styleID = this.style.styleID;
+        this.dirty++;
+        this.indexDirty++;
     }
 
     get text() {
