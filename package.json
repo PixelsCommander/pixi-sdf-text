@@ -4,7 +4,8 @@
   "description": "SDF text rendering for Pixi.js",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Success!\""
+    "test": "echo \"Success!\"",
+    "start": "webpack -w"
   },
   "repository": {
     "type": "git",
