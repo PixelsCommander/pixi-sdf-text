@@ -20,6 +20,6 @@ void main(void)
 
         vec3 color = u_color * alpha;
 
-        gl_FragColor = vec4(color, alpha);
+        gl_FragColor = vec4(color, alpha) * u_alpha;
     }
 }
