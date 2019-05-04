@@ -1,7 +1,7 @@
 import Text from './text';
 
 let vertShader = require('./sdf.vert');
-let fragShader = require('./sdf.frag');
+let fragShader = require('./msdf.frag');
 
 let glCore = PIXI.glCore;
 
@@ -14,6 +14,7 @@ export class SDFRenderer extends PIXI.ObjectRenderer {
 
     onContextChange() {
         var gl = this.renderer.gl;
+        gl.getExtension("OES_standard_derivatives");
         this.shader = new PIXI.Shader(gl, vertShader, fragShader);
     }
 
