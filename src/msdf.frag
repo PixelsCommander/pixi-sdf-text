@@ -17,7 +17,7 @@ float median(float r, float g, float b) {
 
 void main(void) {
 
-    vec4 _sample = texture2D(uSampler, vTextureCoord);
+    vec4 _sample = 1.0 - texture2D(uSampler, vTextureCoord);
     float sigDist = median(_sample.r, _sample.g, _sample.b) - 0.5;
     float alpha = clamp(sigDist/fwidth(sigDist) + 0.5, 0.0, 1.0);
 

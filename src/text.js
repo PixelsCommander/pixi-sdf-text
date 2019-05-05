@@ -9,88 +9,87 @@ import * as shaderCode from './sdf.frag';
 
 export default class Text extends PIXI.mesh.Mesh {
 
-	constructor(text, style = {}, font) {
+    constructor(text, style = {}) {
 
-		super(style.texture);
+        super(style.texture);
 
-		this.style = new TextStyle(style);
-		this._text = text;
-		this._font = font.glyphs
-		this._texture = font.texture
-		this.pluginName = 'sdf';
+        this.style = new TextStyle(style);
+        this._text = text;
 
-		//this.loadAssets();
-	}
+        this.pluginName = 'sdf';
 
-	loadAssets() {
+        this.loadAssets();
+    }
 
-		loadFont(this.style.fontURL, (err, font) => {
+    loadAssets() {
 
-			this._font = font;
-			PIXI.loader.add(this.style.imageURL, this.style.imageURL).load((loader, resources) => {
-				this._texture = resources[this.style.imageURL].texture;
-				this.updateText();
-			});
-		});
-	}
+        loadFont(this.style.fontURL, (err, font) => {
 
-	updateText() {
+            this._font = font;
+            PIXI.loader.add(this.style.imageURL, this.style.imageURL).load((loader, resources) => {
+                this._texture = resources[this.style.imageURL].texture;
+                this.updateText();
+            });
+        });
+    }
 
-		let opt = {
-			text: this._text,
-			font: this._font,
-			...this.style.getFlatCopy()
-		};
+    updateText() {
 
-		if (!opt.font) {
-			throw new TypeError('must specify a { font } in options');
-		}
+        let opt = {
+            text: this._text,
+            font: this._font,
+            ...this.style.getFlatCopy()
+        };
 
-		this.layout = createLayout(opt);
+        if (!opt.font) {
+            throw new TypeError('must specify a { font } in options');
+        }
 
-		// get vec2 texcoords
-		let flipY = opt.flipY !== false;
+        this.layout = createLayout(opt);
 
-		// the desired BMFont data
-		let font = opt.font;
+        // get vec2 texcoords
+        let flipY = opt.flipY !== false;
 
-		// determine texture size from font file
-		let texWidth = font.common.scaleW;
-		let texHeight = font.common.scaleH;
+        // the desired BMFont data
+        let font = opt.font;
 
-		// get visible glyphs
-		let glyphs = this.layout.glyphs.filter(function (glyph) {
-			let bitmap = glyph.data;
-			return bitmap.width * bitmap.height > 0;
-		})
+        // determine texture size from font file
+        let texWidth = font.common.scaleW;
+        let texHeight = font.common.scaleH;
 
-		// provide visible glyphs for convenience
-		this.visibleGlyphs = glyphs;
+        // get visible glyphs
+        let glyphs = this.layout.glyphs.filter(function (glyph) {
+            let bitmap = glyph.data;
+            return bitmap.width * bitmap.height > 0;
+        })
 
-		// get common vertex data
-		let positions = vertices.positions(glyphs);
-		let uvs = vertices.uvs(glyphs, texWidth, texHeight, false);
+        // provide visible glyphs for convenience
+        this.visibleGlyphs = glyphs;
 
-		this.indices = createIndices({
-			clockwise: true,
-			type: 'uint16',
-			count: glyphs.length
-		});
+        // get common vertex data
+        let positions = vertices.positions(glyphs);
+        let uvs = vertices.uvs(glyphs, texWidth, texHeight, false);
 
-		this.vertices = new Float32Array(positions);
-		this.uvs = new Float32Array(uvs);
+        this.indices = createIndices({
+            clockwise: true,
+            type: 'uint16',
+            count: glyphs.length
+        });
 
-		this.styleID = this.style.styleID;
-		this.dirty++;
-		this.indexDirty++;
-	}
+        this.vertices = new Float32Array(positions);
+        this.uvs = new Float32Array(uvs);
 
-	get text() {
-		return this._text;
-	}
+        this.styleID = this.style.styleID;
+        this.dirty++;
+        this.indexDirty++;
+    }
 
-	set text(value) {
-		this._text = value;
-		this.updateText();
-	}
+    get text() {
+        return this._text;
+    }
+
+    set text(value) {
+        this._text = value;
+        this.updateText();
+    }
 }
